@@ -46,6 +46,7 @@ Architecture: all
 Depends: gir1.2-adw-1 (>= 1.5),
          gir1.2-gtk-4.0,
          pkexec,
+         python3,
          python3-gi,
          varco (= ${source:Version}),
          ${misc:Depends},
@@ -63,6 +64,7 @@ Section: admin
 Architecture: all
 Depends: iproute2,
          mount,
+         python3,
          varco (= ${source:Version}),
          ${misc:Depends},
 Recommends: network-manager,

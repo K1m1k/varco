@@ -7,10 +7,10 @@ if [ "$1" = "remove" ] || [ "$1" = "deconfigure" ]; then
     if [ -d /run/systemd/system ]; then
         deb-systemd-invoke stop varco.service >/dev/null || true
         # the user enabled it from the interface: undo that too
-        systemctl --no-reload disable varco.service >/dev/null 2>&1 || true
+        deb-systemd-helper disable varco.service >/dev/null 2>&1 || true
     fi
-    if [ -x /usr/sbin/nft ]; then
-        /usr/sbin/nft delete table inet varco 2>/dev/null || true
+    if command -v nft >/dev/null 2>&1; then
+        nft delete table inet varco 2>/dev/null || true
     fi
 fi
 

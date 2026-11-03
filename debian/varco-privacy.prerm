@@ -5,8 +5,8 @@ set -e
 # numbers) before the tool disappears. If that fails the removal stops, so the
 # original values (kept in /var/lib/varco-privacy) are never lost.
 if [ "$1" = "remove" ] || [ "$1" = "deconfigure" ]; then
-    if [ -x /usr/sbin/varco-privacy ]; then
-        if ! /usr/sbin/varco-privacy restore --quiet; then
+    if command -v varco-privacy >/dev/null 2>&1; then
+        if ! varco-privacy restore --quiet; then
             if [ "${VARCO_PRIVACY_FORCE_REMOVE:-}" = "1" ]; then
                 echo "varco-privacy: original identifiers NOT restored; removal forced." >&2
                 echo "varco-privacy: the originals stay in /var/lib/varco-privacy/state.json" >&2
