@@ -1,0 +1,97 @@
+varco (1.0.3) unstable; urgency=high
+
+  * Renamed from Sentinella to Varco: packages varco, varco-gtk and
+    varco-privacy (was sentinella-anonimo), service varco.service, daemon
+    varcod. The Sentinella packages are replaced (Conflicts) and their rules
+    and settings are taken over at installation.
+  * Security:
+    - the DNS preset no longer lets every program reach any server on port 53
+      (a free way out of the computer): only the DNS servers the system uses
+      ("@dns", follows network changes) and the local resolvers. Old rules
+      are converted when the rules are loaded;
+    - DNS answers are learned only from the system's DNS servers and only for
+      the name that was asked: a forged answer can no longer make a server
+      look like "*.debian.org" and pass the rules based on names;
+    - interpreter identity includes the options written before the script:
+      "python3 -X /approved.py other.py" no longer matches "/approved.py";
+    - programs started with code-loading variables (LD_PRELOAD, PYTHONPATH,
+      NODE_OPTIONS...) get a distinct identity and the request shows them;
+    - a socket shared by different programs is treated as unknown;
+    - no wildcard allow rule for unknown programs ("?");
+    - "block and close the program" never kills a process that reused the pid;
+    - optional ptrace protection (kernel.yama.ptrace_scope=1) offered when
+      protection is turned on, and reported by "varco status";
+    - the privacy module installed from the window: the chosen .deb is copied
+      to a root-only folder and checked before being installed;
+    - only the kernel may report program starts to the watchdog.
+  * Privacy:
+    - whois and logging of allowed connections are off by default;
+    - reverse DNS lookups removed (never shown, they only leaked addresses);
+    - NetworkManager no longer sends the computer name to the router (DHCP)
+      nor answers LLMNR (apply again "varco-privacy mac random").
+  * Robustness:
+    - rules.json has a format version; invalid rules are kept apart and never
+      applied; damaged files are set aside instead of being overwritten;
+    - varco-helper adds preset rules through the running service, so
+      they are no longer lost; "systemctl reload varco" works;
+    - names, whois answers and command lines cannot drive the terminal;
+    - "varco status" reports a stopped watchdog and invalid rules.
+  * installa-offline.sh: stops if the ISO cannot be checked (SHA512SUMS
+    missing) unless SENZA_VERIFICA=1, finds the DVD image by itself, installs
+    exactly this version.
+  * Continuous integration on Debian 13; test that the version strings agree.
+
+ -- K1m1k <k1m1k@users.noreply.github.com>  Tue, 03 Nov 2026 12:00:00 +0100
+
+varco (1.0.2) unstable; urgency=medium
+
+  * varco-privacy: a configuration file that already existed is recorded
+    in the journal (content, permissions, owner) before being replaced and is
+    restored exactly; a foreign file is never deleted.
+  * varco-privacy: hardware masking is reported active only after the
+    boot service is verified enabled and every mask is applied; otherwise
+    everything is undone. New command "verify".
+  * Files rewritten by the privacy module keep their permissions and owner.
+  * Kill switch: waiting requests are closed as well as blocked, so no stale
+    request stays in the interfaces.
+  * Tests for the three cases; system test covers upgrade while protection is
+    active and the restore of a pre-existing NetworkManager file.
+
+ -- K1m1k <k1m1k@users.noreply.github.com>  Sun, 01 Nov 2026 00:10:00 +0100
+
+varco (1.0.1) unstable; urgency=medium
+
+  * Fail-closed under real faults:
+    - load a blocking failsafe table before the daemon starts (ExecStartPre);
+    - systemd watchdog (Type=notify, WatchdogSec) and supervision of the
+      critical threads: a crashed or hung engine is restarted, never bypassed;
+    - a lost verdict or a packet handling error drops the packet;
+    - detect a removed or altered nftables table ('nft flush ruleset')
+      and load it again;
+    - kill switch and pause are recorded only after nftables applied them.
+  * The kill switch also isolates forwarded traffic (virtual machines,
+    containers).
+  * Flood protection: limit of waiting requests, bounded lookup pool,
+    rate-limited logging, cheap drop of inbound traffic to closed ports.
+  * A pause ends when the computer restarts; the kill switch persists.
+  * The automatic kill switch is now off by default and offered when
+    protection is turned on.
+  * Network of every connection (Wi-Fi, mobile/WWAN, Ethernet, VPN) shown and
+    usable in rules; new choice "allow only on this network".
+  * varco-privacy rewritten as a journaled, verified, idempotent tool:
+    - originals recorded atomically before any change;
+    - restore keeps a change until it is verified; package removal stops if
+      the originals cannot be restored, purge never deletes them;
+    - /etc/hosts: only the 127.0.1.1 line is changed;
+    - without NetworkManager a drop-in for 99-default.link is used, so
+      interface names and other .link files are never affected;
+    - no longer depends on the code of the main package.
+  * Interface shows the real service state: stopped service = network blocked.
+
+ -- K1m1k <k1m1k@users.noreply.github.com>  Sat, 31 Oct 2026 23:30:00 +0100
+
+varco (1.0.0) unstable; urgency=medium
+
+  * Initial release.
+
+ -- K1m1k <k1m1k@users.noreply.github.com>  Sat, 31 Oct 2026 21:30:00 +0100

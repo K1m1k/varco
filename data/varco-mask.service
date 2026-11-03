@@ -1,0 +1,15 @@
+[Unit]
+Description=Varco: mask hardware serial numbers
+Documentation=man:varco-privacy(8)
+DefaultDependencies=no
+After=local-fs.target
+Before=sysinit.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/varco-privacy mask-boot
+ExecStop=/usr/sbin/varco-privacy unmask-boot
+
+[Install]
+WantedBy=sysinit.target

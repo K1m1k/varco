@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=Varco
+GenericName=Firewall
+Comment=Approve or block network connections and watch the programs that start
+Comment[it]=Approva o blocca le connessioni di rete e sorveglia i programmi che si avviano
+GenericName[it]=Firewall
+Exec=varco-gtk
+Icon=org.k1m1k.Varco
+Terminal=false
+Categories=GTK;System;Security;Network;
+Keywords=firewall;network;privacy;security;
+StartupNotify=true
+DBusActivatable=false
+X-GNOME-UsesNotifications=true

@@ -1,0 +1,38 @@
+# Unit tests, static checks and a package build on Debian 13 at every push and pull request.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  debian:
+    runs-on: ubuntu-latest
+    container: debian:trixie
+    steps:
+      - name: Tools
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            git ca-certificates build-essential debhelper devscripts gettext lintian \
+            python3 python3-gi gir1.2-glib-2.0 shellcheck pipx
+          pipx install ruff
+      - uses: actions/checkout@v4
+      - name: Unit tests
+        run: make check
+      - name: Static checks
+        run: PATH="$HOME/.local/bin:$PATH" make lint
+      - name: Translations
+        run: msgfmt --check -o /dev/null po/it.po
+      - name: Build the packages
+        run: |
+          dpkg-buildpackage -us -uc -b
+          lintian --fail-on error ../varco_*.changes
+          mkdir -p dist && cp ../*.deb dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: dist/*.deb

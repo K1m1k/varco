@@ -1,0 +1,15 @@
+Tests: unit
+Depends: python3, python3-gi, gir1.2-glib-2.0
+Restrictions: allow-stderr
+
+Tests: smoke
+Depends: varco, varco-privacy
+Restrictions: superficial
+
+# Real conditions in a disposable virtual machine, with restarts:
+# daemon killed or hung, 'nft flush ruleset', daemon unable to start,
+# kill switch and pause across restarts, privacy module across restarts,
+# removal that cannot restore, purge while protection is active.
+Tests: system
+Depends: varco, varco-privacy, curl, e2fsprogs, iproute2, nftables, python3
+Restrictions: needs-root, isolation-machine, breaks-testbed, allow-stderr

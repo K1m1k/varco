@@ -1,0 +1,11 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+# The firewall blocks every unapproved connection: it must never start by
+# itself during installation. The user turns it on from the interface.
+# On upgrades the running service is restarted by varco.postinst.
+override_dh_installsystemd:
+	dh_installsystemd -pvarco --no-enable --no-start --no-stop-on-upgrade varco.service
+	dh_installsystemd -pvarco-privacy --no-enable --no-start --no-stop-on-upgrade varco-mask.service

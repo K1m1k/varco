@@ -1,0 +1,4 @@
+usr/lib/systemd/system/varco-mask.service
+usr/sbin/varco-privacy
+usr/share/polkit-1/actions/org.k1m1k.varco.privacy.policy
+usr/share/varco/varco_privacy

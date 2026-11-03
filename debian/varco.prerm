@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+
+# Removing the package frees the network: stop the service and delete its
+# nftables table, otherwise new connections would stay blocked (fail-closed).
+if [ "$1" = "remove" ] || [ "$1" = "deconfigure" ]; then
+    if [ -d /run/systemd/system ]; then
+        deb-systemd-invoke stop varco.service >/dev/null || true
+        # the user enabled it from the interface: undo that too
+        systemctl --no-reload disable varco.service >/dev/null 2>&1 || true
+    fi
+    if [ -x /usr/sbin/nft ]; then
+        /usr/sbin/nft delete table inet varco 2>/dev/null || true
+    fi
+fi
+
+# byte-code written by hand-run programs is not tracked by dpkg
+rm -rf /usr/share/varco/varco/__pycache__ /usr/share/varco/varco/gtk/__pycache__
+
+#DEBHELPER#
+
+exit 0

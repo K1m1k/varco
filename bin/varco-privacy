@@ -1,0 +1,7 @@
+#!/usr/bin/python3 -I
+# SPDX-License-Identifier: GPL-3.0-or-later
+import sys
+sys.dont_write_bytecode = True  # no __pycache__ under /usr/share (left behind on removal)
+sys.path.insert(0, "/usr/share/varco")
+from varco_privacy.main import main  # noqa: E402
+sys.exit(main())

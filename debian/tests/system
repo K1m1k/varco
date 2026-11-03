@@ -1,0 +1,250 @@
+#!/bin/sh
+# Varco system test: proves fail-closed behaviour and safe restore in real conditions.
+# Runs as root in a disposable virtual machine (autopkgtest restrictions: needs-root,
+# isolation-machine, breaks-testbed) and restarts the machine several times.
+#
+#   autopkgtest varco_*.changes -- qemu /path/to/debian-trixie-amd64.img
+#
+# Every check prints PASS or FAIL; the test fails at the first FAIL.
+set -u
+
+WORK=/var/tmp/varco-systemtest
+mkdir -p "$WORK"
+# Inside autopkgtest the phase comes from the reboot mark. Run by hand in a virtual machine
+# (GNOME Boxes, virt-manager), the phase is remembered in $WORK/next: restart the machine
+# when asked and run the same command again.
+MARK="${AUTOPKGTEST_REBOOT_MARK:-$(cat "$WORK/next" 2>/dev/null || echo start)}"
+
+say()  { echo "[$MARK] $*"; }
+pass() { say "PASS: $*"; }
+fail() { say "FAIL: $*"; journalctl -u varco -n 60 --no-pager || true; exit 1; }
+reboot_to() {
+    echo "$1" > "$WORK/next"
+    if [ -x /tmp/autopkgtest-reboot ]; then
+        say "restarting the machine -> $1"; /tmp/autopkgtest-reboot "$1"
+    else
+        say "RESTART THE VIRTUAL MACHINE NOW, then run this same command again (next phase: $1)"
+    fi
+    exit 0
+}
+
+# A program that is never approved: Python with inline code has its own identity.
+probe() {
+    python3 -c 'import socket,sys; socket.create_connection((sys.argv[1], 443), timeout=4).close()' "$1" \
+        >/dev/null 2>&1
+}
+blocked()  { if probe 1.1.1.1; then fail "$1 (connection passed)"; else pass "$1"; fi; }
+approved() {  # curl is approved by a rule: it must pass when the machine has internet
+    [ -f "$WORK/online" ] || { say "SKIP (no internet in this machine): $1"; return; }
+    curl -sS --max-time 10 -o /dev/null https://deb.debian.org/ && pass "$1" || fail "$1"
+}
+table_present() { nft list table inet varco >/dev/null 2>&1; }
+wait_active() {
+    i=0
+    while [ $i -lt "${1:-30}" ]; do
+        [ "$(systemctl is-active varco.service)" = active ] && return 0
+        sleep 1; i=$((i + 1))
+    done
+    return 1
+}
+main_pid() { systemctl show -p MainPID --value varco.service; }
+
+case "$MARK" in
+start)
+    # ---------------------------------------------------------- installation never blocks
+    [ "$(systemctl is-active varco.service)" != active ] && pass "service not started at installation" \
+        || fail "service started at installation"
+    table_present && fail "table present before activation" || pass "no table before activation"
+    if curl -sS --max-time 10 -o /dev/null https://deb.debian.org/; then touch "$WORK/online"; fi
+
+    # ---------------------------------------------------------- activation
+    /usr/libexec/varco/varco-helper enable dns system || fail "enable"
+    wait_active || fail "service active"
+    pass "service active"
+    blocked "unapproved connection is held and blocked"
+    varco add allow out "$(readlink -f /usr/bin/curl)" '*' 443 tcp >/dev/null || fail "add rule"
+    approved "approved program connects"
+
+    # ---------------------------------------------------------- 1.0.3: DNS only towards the system's servers
+    # port 53 to a server that is not in resolv.conf must wait for a decision, not pass by preset
+    if python3 -c 'import socket; s=socket.create_connection(("1.1.1.1", 53), timeout=4); s.close()' \
+            >/dev/null 2>&1 && ! grep -q "^nameserver 1\.1\.1\.1" /etc/resolv.conf /run/systemd/resolve/resolv.conf \
+            2>/dev/null; then
+        fail "port 53 towards an arbitrary server passed"
+    else
+        pass "port 53 towards an arbitrary server is not a free way out"
+    fi
+    varco rules --json | grep -q '"@dns"' && pass "DNS preset limited to @dns" || fail "DNS preset limited to @dns"
+    # presets added while the service runs are not lost
+    n1=$(varco rules --json | python3 -c 'import json,sys; print(len(json.load(sys.stdin)))')
+    /usr/libexec/varco/varco-helper enable dns system >/dev/null || fail "enable again"
+    systemctl reload varco.service || fail "systemctl reload"
+    n2=$(varco rules --json | python3 -c 'import json,sys; print(len(json.load(sys.stdin)))')
+    [ "$n1" = "$n2" ] && pass "enabling twice keeps the rules, no duplicates" || fail "rules after enabling twice"
+
+    # ---------------------------------------------------------- upgrade while protection is active
+    # (by hand: VARCO_DEBS=/path/to/folder/with/the/debs sh debian/tests/system)
+    if [ -n "${VARCO_DEBS:-}" ]; then
+        rules_before=$(varco rules --json | python3 -c 'import json,sys; print(len(json.load(sys.stdin)))')
+        DEBIAN_FRONTEND=noninteractive dpkg -i "$VARCO_DEBS"/varco*_all.deb >/dev/null 2>&1 \
+            || fail "upgrade with dpkg -i"
+        wait_active 30 && pass "service active after upgrade" || fail "service active after upgrade"
+        rules_after=$(varco rules --json | python3 -c 'import json,sys; print(len(json.load(sys.stdin)))')
+        [ "$rules_before" = "$rules_after" ] && pass "rules kept by the upgrade" || fail "rules kept by the upgrade"
+        blocked "still blocked after upgrade"
+    else
+        say "SKIP (set VARCO_DEBS to test an upgrade): upgrade while protection is active"
+    fi
+
+    # ---------------------------------------------------------- daemon killed
+    old=$(main_pid)
+    kill -9 "$old"
+    table_present && pass "table kept after kill -9" || fail "table kept after kill -9"
+    blocked "blocked while the daemon is dead"
+    wait_active 30 && [ "$(main_pid)" != "$old" ] && pass "systemd restarted the daemon" \
+        || fail "systemd restarted the daemon"
+    blocked "still blocked after restart"
+    approved "rules still work after restart"
+
+    # ---------------------------------------------------------- table removed by another program
+    nft flush ruleset
+    i=0; while [ $i -lt 12 ] && ! table_present; do sleep 1; i=$((i + 1)); done
+    table_present && pass "table loaded again after 'nft flush ruleset' (${i}s)" \
+        || fail "table loaded again after 'nft flush ruleset'"
+    blocked "blocked after flush ruleset"
+
+    # ---------------------------------------------------------- daemon hung (queue not read)
+    old=$(main_pid)
+    kill -STOP "$old"
+    blocked "blocked while the daemon is hung"
+    i=0; while [ $i -lt 90 ] && [ "$(main_pid)" = "$old" ]; do sleep 1; i=$((i + 1)); done
+    [ "$(main_pid)" != "$old" ] && pass "systemd watchdog replaced the hung daemon (${i}s)" \
+        || fail "systemd watchdog replaced the hung daemon"
+    wait_active 30 || fail "service active after watchdog"
+    blocked "blocked after the watchdog restart"
+
+    # ---------------------------------------------------------- daemon that cannot start
+    mv /usr/sbin/varcod "$WORK/varcod"
+    printf '#!/bin/sh\nexit 1\n' > /usr/sbin/varcod
+    chmod 755 /usr/sbin/varcod
+    systemctl restart varco.service 2>/dev/null
+    sleep 5
+    table_present && pass "failsafe table loaded although the daemon cannot start" \
+        || fail "failsafe table loaded although the daemon cannot start"
+    blocked "blocked while the daemon cannot start"
+    mv "$WORK/varcod" /usr/sbin/varcod
+    /usr/libexec/varco/varco-helper restart
+    wait_active || fail "service back after repair"
+    pass "service back after repair"
+
+    # ---------------------------------------------------------- kill switch across a restart
+    varco killswitch on >/dev/null || fail "kill switch on"
+    nft list table inet varco | grep -q 'hook forward' && pass "kill switch covers forwarded traffic" \
+        || fail "kill switch covers forwarded traffic"
+    [ -f "$WORK/online" ] && { curl -sS --max-time 6 -o /dev/null https://deb.debian.org/ \
+        && fail "approved program passes the kill switch" || pass "kill switch blocks approved programs"; }
+    reboot_to killswitch
+    ;;
+
+killswitch)
+    wait_active 60 || fail "service active after restart"
+    varco status | grep -q "Kill switch: ON" && pass "kill switch still on after restart" \
+        || fail "kill switch still on after restart"
+    nft list table inet varco | grep -q 'varco:killswitch' && pass "kill switch table after restart" \
+        || fail "kill switch table after restart"
+    varco killswitch off >/dev/null || fail "kill switch off"
+    approved "network back after kill switch off"
+    varco pause on >/dev/null || fail "pause on"
+    table_present && fail "table present while paused" || pass "pause frees the network"
+    reboot_to pause
+    ;;
+
+pause)
+    wait_active 60 || fail "service active after restart"
+    varco status | grep -q "PAUSED" && fail "pause survived the restart" || pass "pause ended with the restart"
+    blocked "protection back after restart"
+
+    # ---------------------------------------------------------- privacy module
+    hostname > "$WORK/hostname"; cp /etc/hosts "$WORK/hosts"; cp /etc/machine-id "$WORK/machine-id"
+    ip -o link | awk -F': ' '{print $2}' | sort > "$WORK/ifnames"
+    ip -j -d link > "$WORK/links.json"
+    if [ -d /etc/NetworkManager/conf.d ]; then
+        printf '[connection]\nwifi.powersave=2\n' > /etc/NetworkManager/conf.d/99-varco-privacy.conf
+        chmod 600 /etc/NetworkManager/conf.d/99-varco-privacy.conf
+        cp -p /etc/NetworkManager/conf.d/99-varco-privacy.conf "$WORK/nm-before"
+    fi
+    varco-privacy all || fail "privacy all"
+    echo "192.0.2.7	added-later" >> /etc/hosts
+    [ "$(hostname)" = debian ] && pass "generic hostname" || fail "generic hostname"
+    cmp -s /etc/machine-id "$WORK/machine-id" && fail "machine-id changed" || pass "machine-id changed"
+    reboot_to anon
+    ;;
+
+anon)
+    wait_active 60 || fail "service active after restart"
+    [ "$(hostname)" = debian ] && pass "hostname kept after restart" || fail "hostname kept after restart"
+    ip -o link | awk -F': ' '{print $2}' | sort | cmp -s - "$WORK/ifnames" && pass "interface names unchanged" \
+        || fail "interface names unchanged"
+    if ip -j -d link | grep -q '"permaddr"'; then pass "MAC address changed (permaddr differs)"
+    else say "SKIP: MAC change not visible on this virtual network card"; fi
+    if [ -r /sys/devices/virtual/dmi/id/product_serial ]; then
+        grep -q "To Be Filled" /sys/devices/virtual/dmi/id/product_serial && pass "serial masked after restart" \
+            || fail "serial masked after restart"
+    fi
+    varco-privacy verify && pass "every change still active after restart" \
+        || fail "every change still active after restart"
+    varco-privacy restore || fail "restore"
+    if [ -f "$WORK/nm-before" ]; then
+        cmp -s "$WORK/nm-before" /etc/NetworkManager/conf.d/99-varco-privacy.conf \
+            && [ "$(stat -c %a /etc/NetworkManager/conf.d/99-varco-privacy.conf)" = 600 ] \
+            && pass "pre-existing NetworkManager file restored exactly" \
+            || fail "pre-existing NetworkManager file restored exactly"
+        rm -f /etc/NetworkManager/conf.d/99-varco-privacy.conf "$WORK/nm-before"
+    fi
+    [ "$(hostname)" = "$(cat "$WORK/hostname")" ] && pass "hostname restored" || fail "hostname restored"
+    cmp -s /etc/machine-id "$WORK/machine-id" && pass "machine-id restored" || fail "machine-id restored"
+    grep -q "added-later" /etc/hosts && pass "later /etc/hosts edits kept" || fail "later /etc/hosts edits kept"
+    grep -q varco-mask /proc/self/mountinfo && fail "no masks left" || pass "no masks left"
+    reboot_to anon2
+    ;;
+
+anon2)
+    [ "$(hostname)" = "$(cat "$WORK/hostname")" ] && pass "hostname original after restart" \
+        || fail "hostname original after restart"
+    cmp -s /etc/machine-id "$WORK/machine-id" && pass "machine-id original after restart" \
+        || fail "machine-id original after restart"
+    [ ! -e /etc/systemd/network/99-default.link.d/varco-privacy.conf ] && \
+        [ ! -e /etc/NetworkManager/conf.d/99-varco-privacy.conf ] && pass "no MAC configuration left" \
+        || fail "no MAC configuration left"
+    systemctl is-enabled varco-mask.service 2>/dev/null | grep -qx enabled \
+        && fail "masking service left enabled" || pass "masking service disabled"
+
+    # ---------------------------------------------------------- removal that cannot restore must stop
+    varco-privacy hostname blocked-test >/dev/null || fail "hostname change"
+    if command -v chattr >/dev/null && chattr +i /etc/hostname 2>/dev/null; then
+        DEBIAN_FRONTEND=noninteractive apt-get remove -y varco-privacy >/dev/null 2>&1 \
+            && fail "removal stopped when restore fails" || pass "removal stopped when restore fails"
+        dpkg -s varco-privacy >/dev/null 2>&1 && pass "package still installed" || fail "package still installed"
+        chattr -i /etc/hostname
+    else
+        say "SKIP (chattr not usable): removal stopped when restore fails"
+    fi
+
+    # ---------------------------------------------------------- uninstall while protection is on
+    varco killswitch on >/dev/null || fail "kill switch on"
+    DEBIAN_FRONTEND=noninteractive apt-get purge -y varco varco-privacy varco-gtk >/dev/null 2>&1 \
+        || DEBIAN_FRONTEND=noninteractive apt-get purge -y varco varco-privacy >/dev/null 2>&1 \
+        || fail "purge"
+    [ "$(hostname)" = "$(cat "$WORK/hostname")" ] && pass "purge restored the hostname" \
+        || fail "purge restored the hostname"
+    table_present && fail "no table after purge" || pass "no table after purge: network free"
+    for p in /var/lib/varco /var/lib/varco-privacy /etc/varco /usr/share/varco \
+             /etc/systemd/system/multi-user.target.wants/varco.service; do
+        [ -e "$p" ] && fail "left after purge: $p"
+    done
+    pass "nothing left after purge"
+    [ -f "$WORK/online" ] && { probe 1.1.1.1 && pass "network free after purge" || fail "network free after purge"; }
+    rm -f "$WORK/next"
+    say "ALL CHECKS PASSED"
+    ;;
+esac

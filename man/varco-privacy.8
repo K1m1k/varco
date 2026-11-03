@@ -1,0 +1,63 @@
+.TH VARCO-PRIVACY 8 "2026-11-03" "varco 1.0.3" "System Administration"
+.SH NAME
+varco-privacy \- reduce the identifiers this computer exposes
+.SH SYNOPSIS
+.B varco-privacy
+.I command
+.RI [ arguments ]
+.SH DESCRIPTION
+Before any change the original values are written to a journal
+(\fI/var/lib/varco-privacy/state.json\fR) atomically. Only then is the
+system modified, so an interruption never loses them.
+.B restore
+undoes each change, verifies it, and forgets it only after the verification;
+it can be run any number of times. Removing the package runs
+.BR restore ;
+if that fails the removal stops, unless
+\fBVARCO_PRIVACY_FORCE_REMOVE=1\fR is set. Purging never deletes a
+journal that still holds original values.
+.SH COMMANDS
+.TP
+.BR status " [" \-\-json ]
+Show what identifies this computer. Does not require root.
+.TP
+.B mac random\fR|\fBstable\fR|\fBoff
+Random MAC address at every connection, or a fake address that stays the
+same for each network (NetworkManager only), or the original address.
+Without NetworkManager the change applies from the next restart.
+Also enables random MAC addresses for Wi-Fi scans, IPv6 temporary addresses
+and DHCP identifiers derived from the MAC address.
+.TP
+.B hostname \fR[\fIname\fR]
+Use a generic computer name (default \fIdebian\fR).
+.TP
+.B machine-id
+Generate a new
+.IR /etc/machine-id .
+A restart is needed.
+.TP
+.B hardware on\fR|\fBoff
+Hide hardware serial numbers (DMI/SMBIOS, UUID, disk serials exposed in
+\fI/sys\fR) behind generic values with bind mounts, also at every boot
+(\fIvarco-mask.service\fR). The real values in the firmware are not
+changed. Firmware update tools may stop working while this is on.
+.TP
+.B all
+Everything above.
+.TP
+.B restore
+Put every original value back.
+.SH FILES
+.TP
+.I /var/lib/varco-privacy/state.json
+Journal of the changes with the original values.
+.TP
+.I /etc/systemd/network/99-default.link.d/varco-privacy.conf
+MAC address policy when NetworkManager is not installed.
+.TP
+.I /etc/NetworkManager/conf.d/99-varco-privacy.conf
+MAC address settings for NetworkManager.
+.SH SEE ALSO
+.BR varco (1),
+.BR machine-id (5),
+.BR NetworkManager.conf (5)

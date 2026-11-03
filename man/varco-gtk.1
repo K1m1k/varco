@@ -1,0 +1,32 @@
+.TH VARCO-GTK 1 "2026-11-03" "varco 1.0.3" "User Commands"
+.SH NAME
+varco-gtk \- graphical interface of the Varco firewall
+.SH SYNOPSIS
+.B varco-gtk
+.RB [ \-\-background ]
+.SH DESCRIPTION
+.B varco-gtk
+shows the connections waiting for a decision as desktop notifications with
+.IR "Allow always" ,
+.I "Only this time"
+and
+.I Block
+buttons, and offers pages for activity, programs started on the computer,
+active connections, rules and privacy. It runs as the desktop user; every
+action is authorized by
+.BR varcod (8)
+through polkit. Closing the window keeps it running in the background to
+deliver notifications; use
+.I Quit
+from the menu to stop it.
+.SH OPTIONS
+.TP
+.B \-\-background
+Start without opening the window. Used by the autostart entry at login.
+.SH FILES
+.TP
+.I /etc/xdg/autostart/org.k1m1k.Varco-autostart.desktop
+Starts the interface in the background at login.
+.SH SEE ALSO
+.BR varco (1),
+.BR varcod (8)

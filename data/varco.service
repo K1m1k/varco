@@ -1,0 +1,55 @@
+[Unit]
+Description=Varco interactive per-application firewall
+Documentation=man:varcod(8)
+Before=network-pre.target
+Wants=network-pre.target
+After=dbus.service
+# after too many crashes systemd stops trying: the failsafe table stays loaded
+# and new connections remain blocked (fail-closed) until the user acts
+StartLimitIntervalSec=120
+StartLimitBurst=10
+
+[Service]
+Type=notify
+NotifyAccess=main
+ExecStartPre=+-/usr/sbin/modprobe -a nfnetlink_queue nft_queue
+# load the blocking table before anything else: if the daemon cannot start,
+# new connections are dropped instead of passing unchecked
+ExecStartPre=+/usr/sbin/nft -f /usr/share/varco/failsafe.nft
+ExecStart=/usr/sbin/varcod
+# reload configuration and rules without stopping the filter
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=1
+TimeoutStartSec=60
+WatchdogSec=30
+TimeoutStopSec=10
+StateDirectory=varco
+StateDirectoryMode=0700
+UMask=0077
+# Containment: the daemon runs as root but only with the capabilities it needs
+#  NET_ADMIN filter, queues, proc connector · SYS_PTRACE map sockets to processes
+#  DAC_READ_SEARCH read /proc · KILL terminate processes on request
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_SYS_PTRACE CAP_DAC_READ_SEARCH CAP_KILL
+AmbientCapabilities=
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+RestrictAddressFamilies=AF_UNIX AF_NETLINK AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target

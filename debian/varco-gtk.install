@@ -1,0 +1,6 @@
+etc/xdg/autostart/org.k1m1k.Varco-autostart.desktop
+usr/bin/varco-gtk
+usr/share/applications/org.k1m1k.Varco.desktop
+usr/share/icons/hicolor/scalable/apps/org.k1m1k.Varco.svg
+usr/share/metainfo/org.k1m1k.Varco.metainfo.xml
+usr/share/varco/varco/gtk

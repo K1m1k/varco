@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+
+#DEBHELPER#
+
+if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+    rm -f /etc/systemd/system/sysinit.target.wants/varco-mask.service
+fi
+
+if [ "$1" = "purge" ]; then
+    state=/var/lib/varco-privacy/state.json
+    if [ -f "$state" ] && ! grep -q '"changes": {}' "$state"; then
+        # changes were never restored (forced removal): keep the originals
+        echo "varco-privacy: keeping $state: it holds original identifiers not yet restored." >&2
+    else
+        rm -rf /var/lib/varco-privacy
+    fi
+fi
+
+exit 0

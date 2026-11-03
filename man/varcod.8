@@ -1,0 +1,71 @@
+.TH VARCOD 8 "2026-11-03" "varco 1.0.3" "System Administration"
+.SH NAME
+varcod \- Varco interactive per-application firewall service
+.SH SYNOPSIS
+.B varcod
+.SH DESCRIPTION
+.B varcod
+loads an nftables table (\fIinet varco\fR) that sends every new
+connection, outgoing or incoming, to an NFQUEUE. For each one it identifies
+the program (executable, command line, user, systemd unit) and the remote
+side (the name the system really resolved, and optionally whois), then
+accepts it if a rule allows it, drops it if a rule denies it, or holds it
+until the user decides. Unanswered connections are blocked after
+\fIdecision_timeout\fR seconds.
+.PP
+The service is fail-closed. Before the daemon starts, systemd loads
+\fI/usr/share/varco/failsafe.nft\fR, so new connections are dropped
+even if the daemon cannot start. If the daemon dies or hangs, the queue has
+no reader and the kernel drops new connections; systemd restarts it
+(\fBRestart=always\fR, \fBWatchdogSec=30\fR). The table is checked every
+5 seconds and loaded again if another program removed or changed it (for
+example \fBnft flush ruleset\fR). Turning protection off from the interface
+or removing the package deletes the table and frees the network.
+.PP
+The kill switch drops all traffic on input, output and forward hooks on
+every interface and survives restarts. A pause ends when the computer
+restarts.
+.PP
+Every request carries the network interface and its kind (Wi-Fi, mobile
+broadband, Ethernet, VPN); rules may be limited to one kind.
+.PP
+It also watches program starts through the kernel proc connector and
+reports programs never seen before and programs with suspicious traits.
+These reports are heuristics, not proof of malware.
+.PP
+The service is controlled over the D-Bus system bus
+(\fIorg.k1m1k.Varco1\fR). Authorization uses the polkit actions
+\fIorg.k1m1k.varco.monitor\fR, \fIdecide\fR and \fImanage\fR.
+.PP
+.B systemctl reload varco
+(or SIGHUP) reloads configuration and rules without stopping the filter.
+.PP
+The service is not enabled at installation: turn it on from
+.BR varco-gtk (1)
+or with
+.BR "systemctl enable \-\-now varco" .
+.SH FILES
+.TP
+.I /etc/varco/config.json
+Default settings (configuration file).
+.TP
+.I /var/lib/varco/settings.json
+Settings changed from the interfaces; they override the defaults.
+.TP
+.I /var/lib/varco/rules.json
+Permanent rules (format version 2). Rules that are not valid are never applied
+and are kept under \fIinvalid\fR. A file that cannot be read is renamed to
+\fIrules.json.damaged\-DATE\fR instead of being overwritten.
+.TP
+.I /var/lib/varco/state.json
+Kill switch and pause state, kept across restarts.
+.TP
+.I /var/lib/varco/known-programs.json
+Programs already seen by the watchdog.
+.SH NOTES
+Traffic forwarded to containers or virtual machines is not filtered. A
+program that already runs as root can stop any firewall, this one included.
+.SH SEE ALSO
+.BR varco (1),
+.BR varco-gtk (1),
+.BR nft (8)

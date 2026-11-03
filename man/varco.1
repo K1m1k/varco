@@ -1,0 +1,79 @@
+.TH VARCO 1 "2026-11-03" "varco 1.0.3" "User Commands"
+.SH NAME
+varco \- command line interface of the Varco firewall
+.SH SYNOPSIS
+.B varco
+.I command
+.RI [ arguments ]
+.SH DESCRIPTION
+.B varco
+talks to the
+.BR varcod (8)
+service over the D-Bus system bus. Every operation is authorized by polkit:
+viewing and deciding about connections is allowed to the user of the active
+desktop session, changing protection, rules or settings requires the
+administrator password. Run it with
+.B sudo
+from a terminal without a graphical polkit agent.
+.SH COMMANDS
+.TP
+.B status
+Show whether protection is active, paused or isolated (kill switch).
+.TP
+.B monitor
+Interactive view: shows new connections waiting for a decision and lets you
+allow or block them with one letter
+.RB ( s ", " w ", " p ", " t ", " u ", " n ", " d ", " k ", " x ).
+.B w
+allows always, but only on the same kind of network (Wi-Fi, mobile, cable, VPN).
+.TP
+.BR rules " [" \-\-json ]
+List permanent rules.
+.TP
+.BR connections " [" \-\-json ]
+List active connections and services listening on the network, with the
+program that owns them.
+.TP
+.B add \fIallow\fR|\fIdeny\fR \fIout\fR|\fIin\fR|\fI*\fR \fIprogram\fR \fIhost\fR \fIport\fR [\fItcp\fR|\fIudp\fR|\fI*\fR] [\fB\-\-network\fR \fInet\fR]
+Add a rule.
+.I net
+is \fB*\fR (default), \fB@wifi\fR, \fB@mobile\fR, \fB@ethernet\fR, \fB@vpn\fR or an
+interface name pattern.
+.I host
+may be an address, a network in CIDR notation, a name with shell-style
+wildcards (for example \fI*.debian.org\fR), \fB@dns\fR (the DNS servers this
+computer is using now, which change with the network) or \fB*\fR.
+A rule for an unknown program (\fB?\fR) that allows traffic must name one host
+and one port.
+.TP
+.B remove \fIid\fR
+Remove a rule.
+.TP
+.B killswitch on\fR|\fBoff
+Isolate the computer from every network immediately, or reopen it.
+.TP
+.B pause on\fR|\fBoff
+Pause protection (the network is free and not checked) or resume it.
+.TP
+.B set \fIkey\fR \fIvalue\fR
+Change a setting: \fIdecision_timeout\fR, \fIkillswitch_auto\fR (off, in, in_out),
+\fIwhois\fR, \fIwatchdog\fR, \fIlog_allowed\fR, \fImax_pending\fR.
+\fIwhois\fR and \fIlog_allowed\fR are off by default: whois sends every new
+address to the internet registries, and \fIlog_allowed\fR keeps in the journal
+every site the computer connects to.
+.TP
+.B kill \fIpid\fR
+Terminate a process.
+.TP
+.B reload
+Reload configuration and rules.
+.TP
+.B log
+Follow the service log with
+.BR journalctl (1).
+.SH EXIT STATUS
+0 on success, 1 if the service is not running or the operation is not authorized.
+.SH SEE ALSO
+.BR varco-gtk (1),
+.BR varcod (8),
+.BR varco-privacy (8)

@@ -1,0 +1,78 @@
+Source: varco
+Section: net
+Priority: optional
+Maintainer: K1m1k <k1m1k@users.noreply.github.com>
+Build-Depends: debhelper (>= 13.11.6~),
+               debhelper-compat (= 13),
+               gettext,
+               python3,
+Standards-Version: 4.7.2
+Homepage: https://github.com/K1m1k/varco
+Vcs-Browser: https://github.com/K1m1k/varco
+Vcs-Git: https://github.com/K1m1k/varco.git
+Rules-Requires-Root: no
+
+Package: varco
+Architecture: all
+Depends: dbus,
+         gir1.2-glib-2.0,
+         nftables,
+         polkitd,
+         python3 (>= 3.11),
+         python3-gi,
+         ${misc:Depends},
+Recommends: varco-gtk,
+Suggests: varco-privacy,
+Conflicts: sentinella,
+Description: interactive per-application firewall and process watchdog
+ Varco holds every new network connection, outgoing or incoming, until
+ a rule or the user allows or blocks it. For each connection it shows which
+ program asks (executable, command line, user, systemd unit), the remote
+ address with the name the system really resolved, and optionally who owns
+ the address (whois).
+ .
+ Features:
+  * permanent rules per program, host, port and protocol;
+  * kill switch that isolates the computer, manual or automatic;
+  * pause, fail-closed behaviour, state kept across restarts;
+  * watchdog that reports new programs and programs with suspicious traits;
+  * D-Bus system service authorized through polkit, hardened systemd unit.
+ .
+ This package contains the service and the command line tool. The service is
+ not enabled at installation.
+
+Package: varco-gtk
+Architecture: all
+Depends: gir1.2-adw-1 (>= 1.5),
+         gir1.2-gtk-4.0,
+         pkexec,
+         python3-gi,
+         varco (= ${source:Version}),
+         ${misc:Depends},
+Conflicts: sentinella-gtk,
+Description: interactive per-application firewall - graphical interface
+ Varco holds every new network connection until a rule or the user
+ allows or blocks it.
+ .
+ This package contains the GTK 4 / libadwaita interface: desktop
+ notifications with Allow/Block buttons, activity, programs started,
+ active connections, rules, privacy and preferences.
+
+Package: varco-privacy
+Section: admin
+Architecture: all
+Depends: iproute2,
+         mount,
+         varco (= ${source:Version}),
+         ${misc:Depends},
+Recommends: network-manager,
+Conflicts: sentinella-anonimo,
+Description: reduce the identifiers a computer exposes
+ Optional module of Varco. It can randomize the MAC address (also for
+ Wi-Fi scans) and enable IPv6 temporary addresses, set a generic computer
+ name, generate a new machine-id and hide hardware serial numbers
+ (DMI/SMBIOS, UUID, disk serials) from the programs of the system.
+ .
+ Every change is backed up and reverted with "varco-privacy restore",
+ which runs automatically when the package is removed. The real serial
+ numbers stored in the firmware are not changed.

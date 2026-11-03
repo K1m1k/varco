@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+varco --version
+varco-privacy --version
+varco-privacy status --json | python3 -c 'import json, sys; json.load(sys.stdin)'
+python3 -c 'import sys; sys.path.insert(0, "/usr/share/varco"); import varco.core, varco.service, varco.cli, varco.helper'
+nft -c -f /usr/share/varco/failsafe.nft 2>/dev/null || grep -q "queue num 4242" /usr/share/varco/failsafe.nft
+echo ok

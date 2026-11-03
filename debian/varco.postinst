@@ -1,0 +1,26 @@
+#!/bin/sh
+set -e
+
+#DEBHELPER#
+
+# Varco was called Sentinella until 1.0.3. Its package is removed when Varco is installed
+# (Conflicts): its rules and settings, still in /var/lib/sentinella, are taken over once.
+if [ "$1" = "configure" ] && [ ! -e /var/lib/varco/rules.json ] && [ -f /var/lib/sentinella/rules.json ]; then
+    install -d -m 0700 /var/lib/varco
+    for f in rules.json settings.json known-programs.json; do
+        if [ -f "/var/lib/sentinella/$f" ]; then
+            install -m 0600 "/var/lib/sentinella/$f" "/var/lib/varco/$f"
+        fi
+    done
+    echo "varco: rules and settings of Sentinella taken over from /var/lib/sentinella" >&2
+fi
+
+# On upgrade, restart the service only if it is running (it is never started
+# automatically: the user turns protection on from the interface).
+if [ "$1" = "configure" ] && [ -n "$2" ]; then
+    if [ -d /run/systemd/system ]; then
+        deb-systemd-invoke try-restart varco.service >/dev/null || true
+    fi
+fi
+
+exit 0

@@ -1,0 +1,10 @@
+etc/varco/config.json
+usr/bin/varco
+usr/lib/systemd/system/varco.service
+usr/libexec/varco/varco-helper
+usr/sbin/varcod
+usr/share/dbus-1/system.d/org.k1m1k.Varco1.conf
+usr/share/locale
+usr/share/polkit-1/actions/org.k1m1k.varco.policy
+usr/share/varco/failsafe.nft
+usr/share/varco/varco/*.py

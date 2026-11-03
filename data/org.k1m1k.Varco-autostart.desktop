@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Varco
+Comment=Notifications for network connections waiting for your decision
+Comment[it]=Notifiche per le connessioni di rete in attesa della tua decisione
+Exec=varco-gtk --background
+Icon=org.k1m1k.Varco
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true

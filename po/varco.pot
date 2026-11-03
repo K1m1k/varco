@@ -1,0 +1,1824 @@
+# Varco translation template.
+# Copyright (C) 2026 K1m1k
+# This file is distributed under the same license as the varco package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: varco 1.0.3\n"
+"Report-Msgid-Bugs-To: https://github.com/K1m1k/varco/issues\n"
+"POT-Creation-Date: 2026-11-03 12:00+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: varco/cli.py:35
+msgid "OUTBOUND - the computer wants to connect out"
+msgstr ""
+
+#: varco/cli.py:36
+msgid "INBOUND - someone outside wants to connect to the computer"
+msgstr ""
+
+#: varco/cli.py:38 varco/gtk/window.py:135 varco/gtk/window.py:703
+msgid "Program"
+msgstr ""
+
+#: varco/cli.py:40 varco/gtk/window.py:145 varco/gtk/window.py:231
+msgid "Command"
+msgstr ""
+
+#: varco/cli.py:41 varco/gtk/window.py:143
+msgid "Process"
+msgstr ""
+
+#: varco/cli.py:41
+msgid "user"
+msgstr ""
+
+#: varco/cli.py:42
+msgid "started by"
+msgstr ""
+
+#: varco/cli.py:43
+msgid "service"
+msgstr ""
+
+#: varco/cli.py:45
+#, python-brace-format
+msgid ""
+"Shared by different programs ({apps}): it is not possible to know which one sends it"
+msgstr ""
+
+#: varco/cli.py:48
+msgid "Unknown program: only s, w, u, n, d, x are possible"
+msgstr ""
+
+#: varco/cli.py:50
+#, python-brace-format
+msgid "Started with variables that load other code: {env}"
+msgstr ""
+
+#: varco/cli.py:52 varco/gtk/window.py:233
+msgid "Remote"
+msgstr ""
+
+#: varco/cli.py:52 varco/gtk/window.py:129
+msgid "From"
+msgstr ""
+
+#: varco/cli.py:53 varco/gtk/window.py:132 varco/gtk/window.py:709
+msgid "Network"
+msgstr ""
+
+#: varco/cli.py:55 varco/gtk/window.py:136 varco/gtk/window.py:235
+msgid "What it is"
+msgstr ""
+
+#: varco/cli.py:57 varco/gtk/window.py:133 varco/gtk/window.py:234
+msgid "Who it is"
+msgstr ""
+
+#: varco/cli.py:61
+msgid ""
+"Choices (letter, plus the number if several requests are waiting, e.g. \"s\" or \"s 12\"):\n"
+"  s = allow ALWAYS this program to this host and port\n"
+"  w = allow ALWAYS, but only on this type of network (Wi-Fi, mobile, cable...)\n"
+"  p = allow ALWAYS this program to any host on this port\n"
+"  t = allow ALWAYS everything for this program\n"
+"  u = allow only THIS time\n"
+"  n = deny ALWAYS (creates a rule)\n"
+"  d = deny this time\n"
+"  k = deny and TERMINATE the process\n"
+"  x = KILL SWITCH: isolate the computer from the network\n"
+"Other: l = list waiting · ? = help · q = quit"
+msgstr ""
+
+#: varco/cli.py:94
+msgid "Connection to the service lost."
+msgstr ""
+
+#: varco/cli.py:102
+msgid "  choose: s p t u n d k x  (? = help)"
+msgstr ""
+
+#: varco/cli.py:109 varco/cli.py:114 varco/gtk/window.py:545
+msgid "allowed"
+msgstr ""
+
+#: varco/cli.py:109 varco/cli.py:114 varco/gtk/window.py:545
+msgid "blocked"
+msgstr ""
+
+#: varco/cli.py:118
+#, python-brace-format
+msgid "SUSPICIOUS program: {app} (pid {pid}) - {why}"
+msgstr ""
+
+#: varco/cli.py:121
+#, python-brace-format
+msgid "KILL SWITCH ON: computer isolated. {why}"
+msgstr ""
+
+#: varco/cli.py:123
+msgid ""
+"WARNING: another program removed or changed the firewall table: Varco loaded it again."
+msgstr ""
+
+#: varco/cli.py:126
+msgid "Too many connection requests at once: the extra ones are blocked."
+msgstr ""
+
+#: varco/cli.py:148
+msgid "No requests waiting."
+msgstr ""
+
+#: varco/cli.py:152
+msgid "Unknown command. Type ? for help."
+msgstr ""
+
+#: varco/cli.py:158
+msgid "Invalid request number."
+msgstr ""
+
+#: varco/cli.py:166
+#, python-brace-format
+msgid "Several requests are waiting: add the number, e.g. '{c} {n}'"
+msgstr ""
+
+#: varco/cli.py:178
+msgid "Protection: PAUSED (network free, no checks)"
+msgstr ""
+
+#: varco/cli.py:180
+#, python-brace-format
+msgid "Kill switch: ON - {why}"
+msgstr ""
+
+#: varco/cli.py:182
+msgid "Protection: active"
+msgstr ""
+
+#: varco/cli.py:183
+#, python-brace-format
+msgid "Waiting requests: {n}"
+msgstr ""
+
+#: varco/cli.py:184
+#, python-brace-format
+msgid "Rules: {n}"
+msgstr ""
+
+#: varco/cli.py:185
+#, python-brace-format
+msgid "Known programs: {n}"
+msgstr ""
+
+#: varco/cli.py:186
+#, python-brace-format
+msgid "Automatic kill switch: {v}"
+msgstr ""
+
+#: varco/cli.py:188
+msgid ""
+"Process watchdog: STOPPED by an error (see 'varco log'); the firewall keeps working"
+msgstr ""
+
+#: varco/cli.py:190
+#, python-brace-format
+msgid "Rules not applied because they are not valid: {n} (kept in rules.json)"
+msgstr ""
+
+#: varco/cli.py:193
+msgid ""
+"Warning: any program can take control of the other programs of the same user (ptrace). Fix: sudo /usr/libexec/varco/varco-helper ptrace on"
+msgstr ""
+
+#: varco/cli.py:203
+msgid "No rules: everything you do not approve is blocked."
+msgstr ""
+
+#: varco/cli.py:205 varco/gtk/window.py:671
+msgid "ALLOW"
+msgstr ""
+
+#: varco/cli.py:205 varco/gtk/window.py:671
+msgid "DENY"
+msgstr ""
+
+#: varco/cli.py:206
+msgid "out"
+msgstr ""
+
+#: varco/cli.py:206
+msgid "in"
+msgstr ""
+
+#: varco/cli.py:206
+msgid "both"
+msgstr ""
+
+#: varco/cli.py:208 varco/gtk/window.py:233 varco/gtk/window.py:129
+msgid "port"
+msgstr ""
+
+#: varco/cli.py:217
+msgid "Services listening on the network"
+msgstr ""
+
+#: varco/cli.py:217 varco/gtk/window.py:612
+msgid "Active connections"
+msgstr ""
+
+#: varco/cli.py:232
+msgid "Interactive per-application firewall."
+msgstr ""
+
+#: varco/cli.py:234 varco_privacy/main.py:602
+msgid "command"
+msgstr ""
+
+#: varco/cli.py:235
+msgid "show the protection status"
+msgstr ""
+
+#: varco/cli.py:236
+msgid "approve or block connections from the terminal"
+msgstr ""
+
+#: varco/cli.py:237
+msgid "list rules"
+msgstr ""
+
+#: varco/cli.py:239
+msgid "active connections and listening services"
+msgstr ""
+
+#: varco/cli.py:241
+msgid "add a rule"
+msgstr ""
+
+#: varco/cli.py:244
+msgid "program path or *"
+msgstr ""
+
+#: varco/cli.py:245
+msgid ""
+"IP, network, name (also *.example.org), @dns (the DNS servers of this computer) or *"
+msgstr ""
+
+#: varco/cli.py:247
+msgid "port number or *"
+msgstr ""
+
+#: varco/cli.py:249
+msgid "NETWORK"
+msgstr ""
+
+#: varco/cli.py:250
+msgid "*, @wifi, @mobile, @ethernet, @vpn or an interface name (default: any)"
+msgstr ""
+
+#: varco/cli.py:251
+msgid "remove a rule"
+msgstr ""
+
+#: varco/cli.py:253
+msgid "isolate the computer from the network / reopen it"
+msgstr ""
+
+#: varco/cli.py:255
+msgid "pause protection (network free) / resume it"
+msgstr ""
+
+#: varco/cli.py:257
+msgid "change a setting"
+msgstr ""
+
+#: varco/cli.py:261
+msgid "terminate a process"
+msgstr ""
+
+#: varco/cli.py:263
+msgid "reload configuration and rules"
+msgstr ""
+
+#: varco/cli.py:264
+msgid "follow the log (journal)"
+msgstr ""
+
+#: varco/cli.py:289 varco/gtk/app.py:327
+msgid "Kill switch ON: computer isolated"
+msgstr ""
+
+#: varco/cli.py:289
+msgid "Kill switch off: network reopened"
+msgstr ""
+
+#: varco/cli.py:292 varco/cli.py:128
+msgid "Protection PAUSED"
+msgstr ""
+
+#: varco/cli.py:292 varco/cli.py:128 varco/gtk/window.py:394
+msgid "Protection resumed"
+msgstr ""
+
+#: varco/cli.py:304
+msgid "Configuration and rules reloaded"
+msgstr ""
+
+#: varco/cli.py:306
+#, python-brace-format
+msgid "Cannot reach the system bus: {err}"
+msgstr ""
+
+#: varco/cli.py:308
+msgid ""
+"The Varco service is not running. If it is enabled, new connections stay blocked until it is back: see 'systemctl status varco'."
+msgstr ""
+
+#: varco/cli.py:311
+msgid "Not authorized. Run the command with sudo."
+msgstr ""
+
+#: varco/core.py:164
+msgid "unknown setting"
+msgstr ""
+
+#: varco/core.py:170 varco/core.py:172 varco/core.py:174
+msgid "invalid value"
+msgstr ""
+
+#: varco/core.py:180
+msgid "setting saved"
+msgstr ""
+
+#: varco/core.py:440
+msgid "invalid choice"
+msgstr ""
+
+#: varco/core.py:444
+#, python-brace-format
+msgid "request #{id} not found (already decided or expired)"
+msgstr ""
+
+#: varco/core.py:446
+msgid ""
+"unknown program: only a rule for this host and port, or a decision for this time, is possible"
+msgstr ""
+
+#: varco/core.py:473
+#, python-brace-format
+msgid "#{id}: allowed"
+msgstr ""
+
+#: varco/core.py:473
+#, python-brace-format
+msgid "#{id}: blocked"
+msgstr ""
+
+#: varco/core.py:475
+#, python-brace-format
+msgid "rule #{n} created"
+msgstr ""
+
+#: varco/core.py:488
+msgid "computer isolated"
+msgstr ""
+
+#: varco/core.py:490
+#, python-brace-format
+msgid "kill switch could not be applied: {err}"
+msgstr ""
+
+#: varco/core.py:507
+msgid "invalid process"
+msgstr ""
+
+#: varco/core.py:512 varco/core.py:518
+#, python-brace-format
+msgid "process {pid} no longer exists"
+msgstr ""
+
+#: varco/core.py:520
+#, python-brace-format
+msgid ""
+"process {pid} already ended (the number now belongs to another program): nothing was terminated"
+msgstr ""
+
+#: varco/core.py:523
+#, python-brace-format
+msgid "process {pid} belongs to another user: administrator password required"
+msgstr ""
+
+#: varco/core.py:530
+#, python-brace-format
+msgid "process {pid} terminated"
+msgstr ""
+
+#: varco/core.py:532
+#, python-brace-format
+msgid "cannot terminate {pid}: {err}"
+msgstr ""
+
+#: varco/core.py:647
+#, python-brace-format
+msgid "rule #{n} added"
+msgstr ""
+
+#: varco/core.py:653
+msgid "rule removed"
+msgstr ""
+
+#: varco/core.py:653
+msgid "rule not found"
+msgstr ""
+
+#: varco/gtk/app.py:97
+msgid "Start without opening the window (used at login)"
+msgstr ""
+
+#: varco/gtk/app.py:175
+msgid ""
+"Interactive per-application firewall, process watchdog and privacy tools."
+msgstr ""
+
+#: varco/gtk/app.py:182
+msgid "System bus not available"
+msgstr ""
+
+#: varco/gtk/app.py:280
+msgid "Firewall table restored"
+msgstr ""
+
+#: varco/gtk/app.py:281
+msgid ""
+"Another program removed or changed the Varco rules. They were loaded again."
+msgstr ""
+
+#: varco/gtk/app.py:287
+msgid "Too many connection requests at once: the extra ones are blocked"
+msgstr ""
+
+#: varco/gtk/app.py:312
+msgid "Suspicious program started"
+msgstr ""
+
+#: varco/gtk/app.py:317 varco/gtk/window.py:589 varco/gtk/window.py:579
+msgid "Terminate"
+msgstr ""
+
+#: varco/gtk/app.py:341
+#, python-brace-format
+msgid "{n} connections are waiting for your decision"
+msgstr ""
+
+#: varco/gtk/app.py:342
+msgid "Open Varco to decide."
+msgstr ""
+
+#: varco/gtk/app.py:350 varco/gtk/window.py:121
+#, python-brace-format
+msgid "{prog} wants to connect to the internet"
+msgstr ""
+
+#: varco/gtk/app.py:353 varco/gtk/window.py:122
+msgid "Someone outside wants to connect to this computer"
+msgstr ""
+
+#: varco/gtk/app.py:360 varco/gtk/window.py:168 varco/gtk/window.py:497
+msgid "Allow always"
+msgstr ""
+
+#: varco/gtk/app.py:361 varco/gtk/window.py:169
+msgid "Only this time"
+msgstr ""
+
+#: varco/gtk/app.py:362 varco/gtk/window.py:170 varco/gtk/window.py:499
+msgid "Block"
+msgstr ""
+
+#: varco/gtk/app.py:388 varco/gtk/window.py:321
+msgid "Not authorized"
+msgstr ""
+
+#: varco/gtk/app.py:396
+msgid "pkexec is not installed"
+msgstr ""
+
+#: varco/gtk/app.py:413
+msgid "Password not entered: operation cancelled."
+msgstr ""
+
+#: varco/gtk/window.py:74
+msgid "Copy"
+msgstr ""
+
+#: varco/gtk/window.py:87 varco/gtk/window.py:437
+msgid "Cancel"
+msgstr ""
+
+#: varco/gtk/window.py:100
+#, python-brace-format
+msgid "{prog} → {dest}"
+msgstr ""
+
+#: varco/gtk/window.py:101
+#, python-brace-format
+msgid "{src} → {prog}"
+msgstr ""
+
+#: varco/gtk/window.py:108
+#, python-brace-format
+msgid "Request #{id}"
+msgstr ""
+
+#: varco/gtk/window.py:114
+msgid "Copy details"
+msgstr ""
+
+#: varco/gtk/window.py:127
+msgid "Destination"
+msgstr ""
+
+#: varco/gtk/window.py:130
+msgid "To"
+msgstr ""
+
+#: varco/gtk/window.py:131 varco/gtk/window.py:232 varco/gtk/window.py:594
+msgid "Service"
+msgstr ""
+
+#: varco/gtk/window.py:133
+msgid "looking it up…"
+msgstr ""
+
+#: varco/gtk/window.py:138
+#, python-brace-format
+msgid "user {user}, pid {pid}"
+msgstr ""
+
+#: varco/gtk/window.py:140
+#, python-brace-format
+msgid "started by {p}"
+msgstr ""
+
+#: varco/gtk/window.py:142
+#, python-brace-format
+msgid "service {u}"
+msgstr ""
+
+#: varco/gtk/window.py:149
+msgid ""
+"This is the request to find the addresses of websites (DNS). Without it browsing does not work: it is usually allowed always."
+msgstr ""
+
+#: varco/gtk/window.py:152
+msgid ""
+"Code read from standard input (for example 'curl … | sh'). Do not allow it if you do not know what it is."
+msgstr ""
+
+#: varco/gtk/window.py:156
+#, python-brace-format
+msgid ""
+"The connection belongs to several different programs at once ({apps}): it is not possible to know which one sends it. Allow it only if you expect it."
+msgstr ""
+
+#: varco/gtk/window.py:160
+msgid ""
+"The program could not be identified: only a rule for this address and port, or a decision for this time, is possible."
+msgstr ""
+
+#: varco/gtk/window.py:163
+#, python-brace-format
+msgid ""
+"The program was started with variables that make it load other code ({env}). If you did not set them yourself, block it."
+msgstr ""
+
+#: varco/gtk/window.py:175
+#, python-brace-format
+msgid "Allow always, but only on {net}"
+msgstr ""
+
+#: varco/gtk/window.py:177
+msgid "Block always (create a rule)"
+msgstr ""
+
+#: varco/gtk/window.py:180
+#, python-brace-format
+msgid "Allow this program to any site on port {p}"
+msgstr ""
+
+#: varco/gtk/window.py:183
+#, python-brace-format
+msgid "Allow anyone on port {p}"
+msgstr ""
+
+#: varco/gtk/window.py:185
+msgid "Allow everything for this program"
+msgstr ""
+
+#: varco/gtk/window.py:186
+msgid "Block and close the program"
+msgstr ""
+
+#: varco/gtk/window.py:187
+msgid "Isolate the computer from the network"
+msgstr ""
+
+#: varco/gtk/window.py:188
+msgid "Other choices"
+msgstr ""
+
+#: varco/gtk/window.py:213
+#, python-brace-format
+msgid "If you do not decide, it will be blocked in {n} s"
+msgstr ""
+
+#: varco/gtk/window.py:221
+msgid "lookup turned off"
+msgstr ""
+
+#: varco/gtk/window.py:230
+msgid "Request"
+msgstr ""
+
+#: varco/gtk/window.py:231 varco/gtk/window.py:593
+msgid "User"
+msgstr ""
+
+#: varco/gtk/window.py:232 varco/gtk/window.py:594
+msgid "Started by"
+msgstr ""
+
+#: varco/gtk/window.py:237
+msgid "Details copied"
+msgstr ""
+
+#: varco/gtk/window.py:265
+msgid "Preferences"
+msgstr ""
+
+#: varco/gtk/window.py:267 varco/gtk/window.py:419
+msgid "Turn protection on"
+msgstr ""
+
+#: varco/gtk/window.py:268
+msgid "Turn protection off (stop the service)"
+msgstr ""
+
+#: varco/gtk/window.py:269
+msgid "Uninstall Varco…"
+msgstr ""
+
+#: varco/gtk/window.py:272
+msgid "About Varco"
+msgstr ""
+
+#: varco/gtk/window.py:273
+msgid "Quit"
+msgstr ""
+
+#: varco/gtk/window.py:275
+msgid "Menu"
+msgstr ""
+
+#: varco/gtk/window.py:323 varco/gtk/window.py:466 varco/gtk/window.py:875
+msgid "Error"
+msgstr ""
+
+#: varco/gtk/window.py:340
+msgid "Resume protection"
+msgstr ""
+
+#: varco/gtk/window.py:346 varco/gtk/window.py:368
+msgid "Reopen network"
+msgstr ""
+
+#: varco/gtk/window.py:346
+msgid "Isolate computer"
+msgstr ""
+
+#: varco/gtk/window.py:348
+msgid "Kill switch: block all network traffic immediately"
+msgstr ""
+
+#: varco/gtk/window.py:350
+msgid "Protection is OFF: the network is not checked"
+msgstr ""
+
+#: varco/gtk/window.py:351
+msgid "Turn on…"
+msgstr ""
+
+#: varco/gtk/window.py:354
+msgid "The service stopped: for safety new connections are BLOCKED"
+msgstr ""
+
+#: varco/gtk/window.py:355
+msgid "Restart"
+msgstr ""
+
+#: varco/gtk/window.py:358
+msgid "The service is restarting… new connections wait"
+msgstr ""
+
+#: varco/gtk/window.py:362
+msgid ""
+"Not authorized: Varco can only be used from the active desktop session"
+msgstr ""
+
+#: varco/gtk/window.py:366
+#, python-brace-format
+msgid "KILL SWITCH ON: the computer is isolated. {why}"
+msgstr ""
+
+#: varco/gtk/window.py:371
+msgid "PROTECTION PAUSED: the network is free and not checked"
+msgstr ""
+
+#: varco/gtk/window.py:372
+msgid "Resume"
+msgstr ""
+
+#: varco/gtk/window.py:384
+msgid "Service restarted"
+msgstr ""
+
+#: varco/gtk/window.py:396
+msgid "Pause protection?"
+msgstr ""
+
+#: varco/gtk/window.py:397
+msgid ""
+"The network becomes free: no connection is checked until you resume. The administrator password is required."
+msgstr ""
+
+#: varco/gtk/window.py:399 varco/gtk/window.py:340
+msgid "Pause"
+msgstr ""
+
+#: varco/gtk/window.py:401
+msgid "Protection paused"
+msgstr ""
+
+#: varco/gtk/window.py:406
+msgid "Network reopened"
+msgstr ""
+
+#: varco/gtk/window.py:408
+msgid "Isolate the computer?"
+msgstr ""
+
+#: varco/gtk/window.py:409
+msgid ""
+"All network traffic stops immediately on every network (Wi-Fi, mobile, cable, VPN), including connections already open and virtual machines or containers. To stop a single connection use “Block” instead. Reopening requires the administrator password."
+msgstr ""
+
+#: varco/gtk/window.py:413
+msgid "Isolate"
+msgstr ""
+
+#: varco/gtk/window.py:415
+msgid "Computer isolated"
+msgstr ""
+
+#: varco/gtk/window.py:420
+msgid ""
+"From now on every new connection, outgoing or incoming, waits for your permission. At first many requests will appear: approve the programs you use."
+msgstr ""
+
+#: varco/gtk/window.py:423
+msgid ""
+"Allow DNS requests (port 53), only towards the DNS servers of this computer"
+msgstr ""
+
+#: varco/gtk/window.py:425
+msgid ""
+"Allow essential system services (clock, Debian updates, connectivity check)"
+msgstr ""
+
+#: varco/gtk/window.py:427
+msgid ""
+"Isolate the computer by itself if someone from the internet tries to connect to a program that is listening (strict)"
+msgstr ""
+
+#: varco/gtk/window.py:429
+msgid ""
+"Stop programs from taking control of other programs (ptrace, recommended: otherwise a program can make an approved one connect)"
+msgstr ""
+
+#: varco/gtk/window.py:438
+msgid "Turn on"
+msgstr ""
+
+#: varco/gtk/window.py:448
+msgid "Protection on"
+msgstr ""
+
+#: varco/gtk/window.py:454
+msgid "Turn protection off?"
+msgstr ""
+
+#: varco/gtk/window.py:455
+msgid ""
+"The Varco service stops and the network is no longer checked, also after restarting."
+msgstr ""
+
+#: varco/gtk/window.py:456
+msgid "Turn off"
+msgstr ""
+
+#: varco/gtk/window.py:467
+msgid "Uninstall Varco?"
+msgstr ""
+
+#: varco/gtk/window.py:468
+msgid ""
+"The Varco packages are removed with everything they created: rules, settings, service. The privacy module restores the original identifiers. The network becomes free."
+msgstr ""
+
+#: varco/gtk/window.py:470
+msgid "Uninstall"
+msgstr ""
+
+#: varco/gtk/window.py:475 varco/gtk/window.py:517
+msgid "Protection active"
+msgstr ""
+
+#: varco/gtk/window.py:476
+msgid ""
+"Nothing is waiting for your decision. Connections not covered by your rules will appear here and as notifications."
+msgstr ""
+
+#: varco/gtk/window.py:483
+msgid "Requests"
+msgstr ""
+
+#: varco/gtk/window.py:513 varco/gtk/window.py:458
+msgid "Protection off"
+msgstr ""
+
+#: varco/gtk/window.py:513
+msgid "Network blocked: service stopped"
+msgstr ""
+
+#: varco/gtk/window.py:514
+msgid "Not connected"
+msgstr ""
+
+#: varco/gtk/window.py:514
+msgid "Restarting…"
+msgstr ""
+
+#: varco/gtk/window.py:534
+msgid ""
+"Every new connection: allowed, blocked or waiting. The most recent first."
+msgstr ""
+
+#: varco/gtk/window.py:540
+msgid "Activity"
+msgstr ""
+
+#: varco/gtk/window.py:545
+msgid "waiting"
+msgstr ""
+
+#: varco/gtk/window.py:562
+msgid ""
+"Programs started on this computer that were never seen before (NEW) or that behave in an unusual way (SUSPICIOUS). Suspicious is a hint to check, not a proof of malware."
+msgstr ""
+
+#: varco/gtk/window.py:569
+msgid "Programs"
+msgstr ""
+
+#: varco/gtk/window.py:573
+msgid "SUSPICIOUS"
+msgstr ""
+
+#: varco/gtk/window.py:573
+msgid "NEW"
+msgstr ""
+
+#: varco/gtk/window.py:588
+msgid "Terminate the program?"
+msgstr ""
+
+#: varco/gtk/window.py:596
+msgid "WHY IT IS SUSPICIOUS:"
+msgstr ""
+
+#: varco/gtk/window.py:597
+msgid "It is a hint to check, not a proof that the program is harmful."
+msgstr ""
+
+#: varco/gtk/window.py:606
+msgid ""
+"What is connected now and which services accept connections from the network."
+msgstr ""
+
+#: varco/gtk/window.py:610
+msgid "Refresh"
+msgstr ""
+
+#: varco/gtk/window.py:612
+msgid "Listening on the network"
+msgstr ""
+
+#: varco/gtk/window.py:617
+msgid "Connections"
+msgstr ""
+
+#: varco/gtk/window.py:654
+msgid ""
+"Your permanent decisions. Whatever is not covered here is asked or blocked."
+msgstr ""
+
+#: varco/gtk/window.py:658
+msgid "Add rule…"
+msgstr ""
+
+#: varco/gtk/window.py:661
+msgid "Rules"
+msgstr ""
+
+#: varco/gtk/window.py:666
+msgid "No rules yet"
+msgstr ""
+
+#: varco/gtk/window.py:666
+msgid "Rules are created when you choose “Allow always” or “Block always”."
+msgstr ""
+
+#: varco/gtk/window.py:670
+msgid "outbound"
+msgstr ""
+
+#: varco/gtk/window.py:670
+msgid "inbound"
+msgstr ""
+
+#: varco/gtk/window.py:670
+msgid "both directions"
+msgstr ""
+
+#: varco/gtk/window.py:672
+msgid "all programs"
+msgstr ""
+
+#: varco/gtk/window.py:673
+#, python-brace-format
+msgid "host {h}"
+msgstr ""
+
+#: varco/gtk/window.py:673 varco/gtk/window.py:674
+msgid "any"
+msgstr ""
+
+#: varco/gtk/window.py:674
+#, python-brace-format
+msgid "port {p}"
+msgstr ""
+
+#: varco/gtk/window.py:681
+msgid "Delete rule"
+msgstr ""
+
+#: varco/gtk/window.py:688
+#, python-brace-format
+msgid "Delete rule #{n}?"
+msgstr ""
+
+#: varco/gtk/window.py:689
+msgid "Delete"
+msgstr ""
+
+#: varco/gtk/window.py:694
+msgid "New rule"
+msgstr ""
+
+#: varco/gtk/window.py:698
+msgid ""
+"Use * for “any”. The program is the full path, for example /usr/bin/curl."
+msgstr ""
+
+#: varco/gtk/window.py:700
+msgid "Action"
+msgstr ""
+
+#: varco/gtk/window.py:700
+msgid "Allow"
+msgstr ""
+
+#: varco/gtk/window.py:700
+msgid "Deny"
+msgstr ""
+
+#: varco/gtk/window.py:701
+msgid "Direction"
+msgstr ""
+
+#: varco/gtk/window.py:702
+msgid "Outbound"
+msgstr ""
+
+#: varco/gtk/window.py:702
+msgid "Inbound"
+msgstr ""
+
+#: varco/gtk/window.py:702
+msgid "Both"
+msgstr ""
+
+#: varco/gtk/window.py:704
+msgid "Host, network or name (*.example.org)"
+msgstr ""
+
+#: varco/gtk/window.py:705 varco/gtk/window.py:234
+msgid "Port"
+msgstr ""
+
+#: varco/gtk/window.py:706
+msgid "Protocol"
+msgstr ""
+
+#: varco/gtk/window.py:707
+msgid "Any network"
+msgstr ""
+
+#: varco/gtk/window.py:707 varco/texts.py:25
+msgid "Wi-Fi"
+msgstr ""
+
+#: varco/gtk/window.py:707 varco/texts.py:26
+msgid "mobile network (WWAN)"
+msgstr ""
+
+#: varco/gtk/window.py:708 varco/texts.py:27
+msgid "cable (Ethernet)"
+msgstr ""
+
+#: varco/gtk/window.py:708 varco/texts.py:28
+msgid "VPN"
+msgstr ""
+
+#: varco/gtk/window.py:713
+msgid "Add"
+msgstr ""
+
+#: varco/gtk/window.py:743
+msgid "Privacy module not installed"
+msgstr ""
+
+#: varco/gtk/window.py:744
+msgid ""
+"The optional varco-privacy package randomizes the MAC address, uses a generic computer name, regenerates the machine-id and hides hardware serial numbers. Everything can be undone."
+msgstr ""
+
+#: varco/gtk/window.py:747
+msgid "Install the privacy module"
+msgstr ""
+
+#: varco/gtk/window.py:753
+msgid "Protections"
+msgstr ""
+
+#: varco/gtk/window.py:754
+msgid "Each change asks for the administrator password."
+msgstr ""
+
+#: varco/gtk/window.py:755
+msgid "Random MAC address"
+msgstr ""
+
+#: varco/gtk/window.py:756
+msgid "Routers and Wi-Fi networks no longer see the real address"
+msgstr ""
+
+#: varco/gtk/window.py:757
+msgid "Hide hardware serial numbers"
+msgstr ""
+
+#: varco/gtk/window.py:758
+msgid "Programs see generic values for motherboard, UUID and disks"
+msgstr ""
+
+#: varco/gtk/window.py:763
+msgid "Computer name"
+msgstr ""
+
+#: varco/gtk/window.py:764
+msgid "Use “debian”"
+msgstr ""
+
+#: varco/gtk/window.py:766
+msgid "machine-id"
+msgstr ""
+
+#: varco/gtk/window.py:767
+msgid "Regenerate"
+msgstr ""
+
+#: varco/gtk/window.py:770
+msgid "What this computer exposes"
+msgstr ""
+
+#: varco/gtk/window.py:775
+msgid "Restore all original values"
+msgstr ""
+
+#: varco/gtk/window.py:776
+msgid "Restore all original values?"
+msgstr ""
+
+#: varco/gtk/window.py:776
+msgid ""
+"MAC address, computer name, machine-id and serial numbers go back to the original values."
+msgstr ""
+
+#: varco/gtk/window.py:778
+msgid "Restore"
+msgstr ""
+
+#: varco/gtk/window.py:783
+msgid "Privacy"
+msgstr ""
+
+#: varco/gtk/window.py:788
+msgid "Choose the file varco-privacy_….deb"
+msgstr ""
+
+#: varco/gtk/window.py:790
+msgid "Varco privacy package"
+msgstr ""
+
+#: varco/gtk/window.py:836 varco/gtk/window.py:837 varco/gtk/window.py:844
+msgid "changed"
+msgstr ""
+
+#: varco/gtk/window.py:842
+#, python-brace-format
+msgid "Network card {n}"
+msgstr ""
+
+#: varco/gtk/window.py:843
+#, python-brace-format
+msgid "current {c} · original {p}"
+msgstr ""
+
+#: varco/gtk/window.py:846 varco_privacy/main.py:584
+msgid "masked"
+msgstr ""
+
+#: varco/gtk/window.py:846
+msgid "visible to all programs"
+msgstr ""
+
+#: varco/gtk/window.py:847
+msgid "readable by root only"
+msgstr ""
+
+#: varco/gtk/window.py:849
+msgid "Disks"
+msgstr ""
+
+#: varco/gtk/window.py:849
+#, python-brace-format
+msgid ""
+"{n} names with model and serial number in /dev/disk/by-id (cannot be changed by software)"
+msgstr ""
+
+#: varco/gtk/window.py:851
+msgid "IPv6 temporary addresses"
+msgstr ""
+
+#: varco/gtk/window.py:851 varco_privacy/main.py:573 varco_privacy/main.py:590
+msgid "on"
+msgstr ""
+
+#: varco/gtk/window.py:851 varco_privacy/main.py:573 varco_privacy/main.py:590
+msgid "off"
+msgstr ""
+
+#: varco/gtk/window.py:853
+#, python-brace-format
+msgid "Mobile modem {name}"
+msgstr ""
+
+#: varco/gtk/window.py:854
+msgid ""
+"The operator always sees the IMEI and the SIM: they cannot be hidden by software. The MAC address does not apply to mobile networks."
+msgstr ""
+
+#: varco/gtk/window.py:857
+msgid "Without NetworkManager the new address applies from the next restart"
+msgstr ""
+
+#: varco/gtk/window.py:859
+msgid "popularity-contest"
+msgstr ""
+
+#: varco/gtk/window.py:860
+msgid "sends your list of packages to Debian every week"
+msgstr ""
+
+#: varco/gtk/window.py:873
+msgid "Done"
+msgstr ""
+
+#: varco/gtk/window.py:883
+msgid "Firewall"
+msgstr ""
+
+#: varco/gtk/window.py:883
+msgid "Changes ask for the administrator password."
+msgstr ""
+
+#: varco/gtk/window.py:884
+msgid "Automatic kill switch"
+msgstr ""
+
+#: varco/gtk/window.py:885
+msgid "Isolate the computer by itself when an unapproved connection arrives"
+msgstr ""
+
+#: varco/gtk/window.py:886
+msgid "Off"
+msgstr ""
+
+#: varco/gtk/window.py:886
+msgid "Inbound connections from the internet"
+msgstr ""
+
+#: varco/gtk/window.py:887
+msgid "Also outbound connections (very strict)"
+msgstr ""
+
+#: varco/gtk/window.py:889
+msgid "Time to decide (seconds)"
+msgstr ""
+
+#: varco/gtk/window.py:890
+msgid "After this time an unanswered connection is blocked"
+msgstr ""
+
+#: varco/gtk/window.py:891
+msgid "Find out who is on the other side (whois)"
+msgstr ""
+
+#: varco/gtk/window.py:892
+msgid "When off, Varco itself never sends anything on the network"
+msgstr ""
+
+#: varco/gtk/window.py:893
+msgid "Process watchdog"
+msgstr ""
+
+#: varco/gtk/window.py:894
+msgid ""
+"Report new and suspicious programs (applies after restarting the service)"
+msgstr ""
+
+#: varco/gtk/window.py:896
+msgid "Record allowed connections"
+msgstr ""
+
+#: varco/gtk/window.py:897
+msgid "When off, only blocked connections are recorded"
+msgstr ""
+
+#: varco/netutil.py:276
+msgid "local network / private address"
+msgstr ""
+
+#: varco/netutil.py:290
+msgid "unknown (no whois answer)"
+msgstr ""
+
+#: varco/procinfo.py:291
+#, python-brace-format
+msgid "Debian package '{pkg}': {desc}"
+msgstr ""
+
+#: varco/procinfo.py:293
+#, python-brace-format
+msgid "script {script} (not from a package) run by '{pkg}'"
+msgstr ""
+
+#: varco/procinfo.py:295
+msgid "installed by hand (not from a Debian package)"
+msgstr ""
+
+#: varco/procinfo.py:296
+msgid "does NOT belong to any Debian package"
+msgstr ""
+
+#: varco/procinfo.py:307
+msgid "its executable was deleted from disk after it started"
+msgstr ""
+
+#: varco/procinfo.py:310
+msgid "it runs from a temporary folder"
+msgstr ""
+
+#: varco/procinfo.py:312
+msgid "it runs from a hidden file or folder"
+msgstr ""
+
+#: varco/procinfo.py:314
+msgid "it runs only in memory (memfd), without a file on disk"
+msgstr ""
+
+#: varco/procinfo.py:316
+#, python-brace-format
+msgid ""
+"it calls itself '{name}' like a kernel thread, but it is a normal program"
+msgstr ""
+
+#: varco/procinfo.py:318
+msgid "the script it runs is in a temporary folder"
+msgstr ""
+
+#: varco/procinfo.py:320
+#, python-brace-format
+msgid "it was started with variables that load other code ({env})"
+msgstr ""
+
+#: varco/procinfo.py:325
+msgid "it runs as root but its file can be modified by normal users"
+msgstr ""
+
+#: varco/procinfo.py:329
+msgid "it runs as root from a home folder"
+msgstr ""
+
+#: varco/texts.py:8
+msgid "DNS - turns site names into addresses"
+msgstr ""
+
+#: varco/texts.py:9
+msgid "HTTP - unencrypted web pages"
+msgstr ""
+
+#: varco/texts.py:10
+msgid "HTTPS - encrypted websites and services"
+msgstr ""
+
+#: varco/texts.py:11
+msgid "encrypted DNS"
+msgstr ""
+
+#: varco/texts.py:12
+msgid "SSH - remote access"
+msgstr ""
+
+#: varco/texts.py:13
+msgid "NTP - clock synchronization"
+msgstr ""
+
+#: varco/texts.py:14 varco/texts.py:15
+msgid "DHCP - network address from the router"
+msgstr ""
+
+#: varco/texts.py:16
+msgid "mDNS - discovery of devices on the local network"
+msgstr ""
+
+#: varco/texts.py:17
+msgid "SSDP - discovery of devices on the local network"
+msgstr ""
+
+#: varco/texts.py:18
+msgid "IMAP - incoming mail"
+msgstr ""
+
+#: varco/texts.py:19 varco/texts.py:20
+msgid "SMTP - outgoing mail"
+msgstr ""
+
+#: varco/texts.py:21
+msgid "STUN - calls and video calls"
+msgstr ""
+
+#: varco/texts.py:29
+msgid "virtual network"
+msgstr ""
+
+#: varco/texts.py:30
+msgid "this computer"
+msgstr ""
+
+#: varco/texts.py:31
+msgid "other network"
+msgstr ""
+
+#: varco/texts.py:50
+#, python-brace-format
+msgid "port {port}/{proto}"
+msgstr ""
+
+#: varco/texts.py:60
+msgid "any network"
+msgstr ""
+
+#: varco/texts.py:63
+#, python-brace-format
+msgid "interface {name}"
+msgstr ""
+
+#: varco/texts.py:68
+msgid "the DNS servers of this computer"
+msgstr ""
+
+#: varco/texts.py:75
+msgid "unknown program"
+msgstr ""
+
+#: varco/texts.py:84
+#, python-brace-format
+msgid "{name} (code from stdin)"
+msgstr ""
+
+#: varco/texts.py:96
+#, python-brace-format
+msgid "rule #{n}"
+msgstr ""
+
+#: varco/texts.py:97
+msgid "your decision"
+msgstr ""
+
+#: varco/texts.py:98
+msgid "no answer in time"
+msgstr ""
+
+#: varco/texts.py:99
+msgid "inbound, no service listening"
+msgstr ""
+
+#: varco/texts.py:100
+#, python-brace-format
+msgid "waiting for your decision (#{n})"
+msgstr ""
+
+#: varco/texts.py:101
+msgid "protection paused"
+msgstr ""
+
+#: varco/texts.py:102
+msgid "too many requests at once (flood protection)"
+msgstr ""
+
+#: varco/texts.py:103
+msgid "kill switch"
+msgstr ""
+
+#: varco/texts.py:113
+#, python-brace-format
+msgid "automatic: unapproved inbound connection from {ip} (request #{id})"
+msgstr ""
+
+#: varco/texts.py:116
+#, python-brace-format
+msgid "automatic: unapproved outbound connection to {ip} (request #{id})"
+msgstr ""
+
+#: varco/texts.py:118
+#, python-brace-format
+msgid "activated by you on request #{id}"
+msgstr ""
+
+#: varco/texts.py:120
+msgid "activated by you"
+msgstr ""
+
+#: varco_privacy/main.py:142
+#, python-brace-format
+msgid "{path} exists and is not a regular file: nothing was changed"
+msgstr ""
+
+#: varco_privacy/main.py:145
+#, python-brace-format
+msgid "{path} cannot be read: nothing was changed"
+msgstr ""
+
+#: varco_privacy/main.py:154
+#, python-brace-format
+msgid "{path} could not be removed"
+msgstr ""
+
+#: varco_privacy/main.py:160
+#, python-brace-format
+msgid "{path} could not be restored"
+msgstr ""
+
+#: varco_privacy/main.py:174
+#, python-brace-format
+msgid "the journal {path} is damaged: {err}"
+msgstr ""
+
+#: varco_privacy/main.py:300
+#, python-brace-format
+msgid "computer name still differs from the original '{name}'"
+msgstr ""
+
+#: varco_privacy/main.py:302
+msgid "/etc/hosts could not be restored"
+msgstr ""
+
+#: varco_privacy/main.py:303
+#, python-brace-format
+msgid "computer name '{name}'"
+msgstr ""
+
+#: varco_privacy/main.py:324
+msgid "/etc/machine-id could not be restored"
+msgstr ""
+
+#: varco_privacy/main.py:328
+msgid "/var/lib/dbus/machine-id could not be restored"
+msgstr ""
+
+#: varco_privacy/main.py:329
+msgid "original machine-id (fully active after a restart)"
+msgstr ""
+
+#: varco_privacy/main.py:337
+msgid "Without NetworkManager only the 'random' mode is available."
+msgstr ""
+
+#: varco_privacy/main.py:368
+msgid "Random MAC address on: connections reconnect with the new address."
+msgstr ""
+
+#: varco_privacy/main.py:369
+msgid "Random MAC address configured; it applies when the network reconnects."
+msgstr ""
+
+#: varco_privacy/main.py:373
+msgid "Random MAC address on from the next restart."
+msgstr ""
+
+#: varco_privacy/main.py:388
+msgid "original MAC address"
+msgstr ""
+
+#: varco_privacy/main.py:389
+msgid "original MAC address (from the next restart)"
+msgstr ""
+
+#: varco_privacy/main.py:427
+#, python-brace-format
+msgid "the masking service could not be enabled: {err}"
+msgstr ""
+
+#: varco_privacy/main.py:440
+#, python-brace-format
+msgid "{n} of {total} serial numbers could not be masked: {paths}"
+msgstr ""
+
+#: varco_privacy/main.py:448
+#, python-brace-format
+msgid "undo failed: {err}"
+msgstr ""
+
+#: varco_privacy/main.py:449
+msgid "nothing was left active."
+msgstr ""
+
+#: varco_privacy/main.py:457
+msgid "some serial numbers are still masked"
+msgstr ""
+
+#: varco_privacy/main.py:459
+msgid "the masking service is still enabled"
+msgstr ""
+
+#: varco_privacy/main.py:460
+msgid "hardware serial numbers"
+msgstr ""
+
+#: varco_privacy/main.py:474
+msgid "the masking service is not enabled"
+msgstr ""
+
+#: varco_privacy/main.py:479
+#, python-brace-format
+msgid "{n} serial numbers are not masked"
+msgstr ""
+
+#: varco_privacy/main.py:483
+#, python-brace-format
+msgid "the MAC address configuration is missing: {path}"
+msgstr ""
+
+#: varco_privacy/main.py:485
+msgid "the computer name is the original one"
+msgstr ""
+
+#: varco_privacy/main.py:487
+msgid "the machine-id is the original one"
+msgstr ""
+
+#: varco_privacy/main.py:489
+#, python-brace-format
+msgid "NOT active: {what}"
+msgstr ""
+
+#: varco_privacy/main.py:491
+#, python-brace-format
+msgid "Every recorded change is active: {what}"
+msgstr ""
+
+#: varco_privacy/main.py:513
+#, python-brace-format
+msgid "Restored: {what}."
+msgstr ""
+
+#: varco_privacy/main.py:515
+msgid "Nothing to restore."
+msgstr ""
+
+#: varco_privacy/main.py:517
+#, python-brace-format
+msgid "NOT restored: {err}"
+msgstr ""
+
+#: varco_privacy/main.py:519
+#, python-brace-format
+msgid ""
+"The original values are kept in {path}: run 'varco-privacy restore' again after fixing the problem."
+msgstr ""
+
+#: varco_privacy/main.py:567
+msgid "What identifies this computer"
+msgstr ""
+
+#: varco_privacy/main.py:568
+#, python-brace-format
+msgid "Computer name: {v}"
+msgstr ""
+
+#: varco_privacy/main.py:569
+msgid "sent to the router via DHCP and visible on the local network"
+msgstr ""
+
+#: varco_privacy/main.py:570
+#, python-brace-format
+msgid "machine-id: {v}"
+msgstr ""
+
+#: varco_privacy/main.py:571
+msgid "unique system identifier, readable by every program"
+msgstr ""
+
+#: varco_privacy/main.py:572
+#, python-brace-format
+msgid "Random MAC address: {v}"
+msgstr ""
+
+#: varco_privacy/main.py:577 varco_privacy/main.py:576
+msgid "original"
+msgstr ""
+
+#: varco_privacy/main.py:579
+#, python-brace-format
+msgid ""
+"Mobile modem {name}: the operator always sees the IMEI and the SIM; they cannot be hidden by software"
+msgstr ""
+
+#: varco_privacy/main.py:581
+#, python-brace-format
+msgid "Hardware serial numbers masked: {v}"
+msgstr ""
+
+#: varco_privacy/main.py:582
+msgid "yes"
+msgstr ""
+
+#: varco_privacy/main.py:582
+msgid "no"
+msgstr ""
+
+#: varco_privacy/main.py:584
+msgid "visible to all"
+msgstr ""
+
+#: varco_privacy/main.py:584
+msgid "root only"
+msgstr ""
+
+#: varco_privacy/main.py:586
+msgid ""
+"The real serial numbers are stored in the firmware: software can only hide them."
+msgstr ""
+
+#: varco_privacy/main.py:587
+#, python-brace-format
+msgid ""
+"Disks: {n} names with model and serial number in /dev/disk/by-id (cannot be changed)"
+msgstr ""
+
+#: varco_privacy/main.py:589
+#, python-brace-format
+msgid "IPv6 temporary addresses: {v}"
+msgstr ""
+
+#: varco_privacy/main.py:592
+msgid "popularity-contest sends your package list to Debian every week"
+msgstr ""
+
+#: varco_privacy/main.py:593
+msgid ""
+"Note: on the web a computer is recognized mostly by the browser fingerprint."
+msgstr ""
+
+#: varco_privacy/main.py:600
+msgid "Reduce the identifiers this computer exposes."
+msgstr ""
+
+#: varco_privacy/main.py:603
+msgid "show what identifies this computer"
+msgstr ""
+
+#: varco_privacy/main.py:605
+msgid "random MAC address"
+msgstr ""
+
+#: varco_privacy/main.py:607
+msgid "generic computer name"
+msgstr ""
+
+#: varco_privacy/main.py:609
+msgid "new machine-id"
+msgstr ""
+
+#: varco_privacy/main.py:610
+msgid "mask hardware serial numbers"
+msgstr ""
+
+#: varco_privacy/main.py:612
+msgid "everything above"
+msgstr ""
+
+#: varco_privacy/main.py:613
+msgid "put every original value back"
+msgstr ""
+
+#: varco_privacy/main.py:615
+msgid "check that every recorded change is really active"
+msgstr ""
+
+#: varco_privacy/main.py:627
+msgid "This operation requires root."
+msgstr ""
+
+#: varco_privacy/main.py:648
+msgid "Invalid name: letters, digits and hyphens only."
+msgstr ""
+
+#: varco_privacy/main.py:651
+#, python-brace-format
+msgid "Computer name is now: {name}"
+msgstr ""
+
+#: varco_privacy/main.py:652
+msgid "Some open programs may need to be restarted."
+msgstr ""
+
+#: varco_privacy/main.py:655
+#, python-brace-format
+msgid ""
+"New machine-id: {v}. Restart the computer so that every program uses it."
+msgstr ""
+
+#: varco_privacy/main.py:661
+msgid ""
+"This computer exposes no hardware serial numbers to mask: nothing was changed."
+msgstr ""
+
+#: varco_privacy/main.py:663
+#, python-brace-format
+msgid ""
+"{n} identifiers masked (DMI serial numbers, UUID, SMBIOS tables, disk serials)."
+msgstr ""
+
+#: varco_privacy/main.py:664
+msgid ""
+"They stay masked after restarting. If a firmware update tool stops working, turn this off."
+msgstr ""
+
+#: varco_privacy/main.py:670
+msgid "Everything applied. Restart the computer to complete the change."
+msgstr ""
+
+#: varco_privacy/main.py:677
+#, python-brace-format
+msgid ""
+"Error: {err}. Nothing is lost: 'varco-privacy restore' puts back what was changed."
+msgstr ""

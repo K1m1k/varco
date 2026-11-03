@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+  <vendor>Varco</vendor>
+  <vendor_url>https://github.com/K1m1k/varco</vendor_url>
+  <icon_name>org.k1m1k.Varco</icon_name>
+  <action id="org.k1m1k.varco.privacy">
+    <description>Change the identifiers of this computer (MAC address, name, machine-id, serial numbers)</description>
+    <description xml:lang="it">Modificare gli identificativi del computer (indirizzo MAC, nome, machine-id, numeri di serie)</description>
+    <message>Authentication is required to change the identifiers of this computer</message>
+    <message xml:lang="it">Serve la password per modificare gli identificativi del computer</message>
+    <defaults>
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
+      <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/sbin/varco-privacy</annotate>
+  </action>
+</policyconfig>

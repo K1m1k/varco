@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 K1m1k -->
+<component type="desktop-application">
+  <id>org.k1m1k.Varco</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Varco</name>
+  <summary>Interactive per-application firewall</summary>
+  <summary xml:lang="it">Firewall interattivo per applicazione</summary>
+  <description>
+    <p>Varco holds every new network connection, outgoing or incoming, until you allow or block it.
+      For each request it shows which program asks, where it wants to go, and who is on the other side.</p>
+    <p xml:lang="it">Varco trattiene ogni nuova connessione di rete, in uscita o in entrata, finché non la consenti
+      o la blocchi. Per ogni richiesta mostra quale programma la chiede, dove vuole andare e chi c'è dall'altra parte.</p>
+    <ul>
+      <li>Decisions from desktop notifications, permanent rules</li>
+      <li>Kill switch that isolates the computer</li>
+      <li>Watchdog that reports new and suspicious programs</li>
+      <li>Optional privacy module: random MAC address, generic name, hidden serial numbers</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">org.k1m1k.Varco.desktop</launchable>
+  <developer id="io.github.k1m1k">
+    <name>K1m1k</name>
+  </developer>
+  <url type="homepage">https://github.com/K1m1k/varco</url>
+  <url type="bugtracker">https://github.com/K1m1k/varco/issues</url>
+  <categories>
+    <category>System</category>
+    <category>Security</category>
+  </categories>
+  <content_rating type="oars-1.1"/>
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
+  <releases>
+    <release version="1.0.3" date="2026-11-03">
+      <description>
+        <p>Harder to get around: DNS only towards the computer's DNS servers, names learned only
+          from them, programs started with extra options, variables or shared connections are no
+          longer taken for approved ones. More private by default: no whois, no reverse DNS, no
+          history of allowed connections in the journal, computer name not sent to the router.</p>
+      </description>
+    </release>
+    <release version="1.0.2" date="2026-11-01">
+      <description>
+        <p>Pre-existing configuration files are restored exactly; hardware masking is verified.</p>
+      </description>
+    </release>
+    <release version="1.0.1" date="2026-10-31">
+      <description>
+        <p>Fail-closed in real failure conditions, kill switch on every network including virtual
+          machines, network type in requests and rules, safe and verified restore of identifiers.</p>
+      </description>
+    </release>
+    <release version="1.0.0" date="2026-10-31">
+      <description><p>First release.</p></description>
+    </release>
+  </releases>
+</component>

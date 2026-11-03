@@ -1,0 +1,10 @@
+{
+  "decision_timeout": 120,
+  "killswitch_auto": "off",
+  "whois": false,
+  "watchdog": true,
+  "log_allowed": false,
+  "allow_dhcp": true,
+  "allow_icmpv6_essential": true,
+  "max_pending": 100
+}

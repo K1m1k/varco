@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+  <vendor>Varco</vendor>
+  <vendor_url>https://github.com/K1m1k/varco</vendor_url>
+  <icon_name>org.k1m1k.Varco</icon_name>
+
+  <action id="org.k1m1k.varco.monitor">
+    <description>View firewall status, connections and requests</description>
+    <description xml:lang="it">Vedere stato del firewall, connessioni e richieste</description>
+    <message>Authentication is required to view the firewall activity</message>
+    <message xml:lang="it">Serve l'autenticazione per vedere l'attività del firewall</message>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>yes</allow_active>
+    </defaults>
+  </action>
+
+  <action id="org.k1m1k.varco.decide">
+    <description>Allow or block connections, isolate the computer</description>
+    <description xml:lang="it">Consentire o bloccare connessioni, isolare il computer</description>
+    <message>Authentication is required to decide about network connections</message>
+    <message xml:lang="it">Serve l'autenticazione per decidere sulle connessioni di rete</message>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>yes</allow_active>
+    </defaults>
+  </action>
+
+  <action id="org.k1m1k.varco.manage">
+    <description>Pause protection, reopen the network, change rules and settings</description>
+    <description xml:lang="it">Mettere in pausa la protezione, riaprire la rete, modificare regole e impostazioni</description>
+    <message>Authentication is required to change the firewall protection</message>
+    <message xml:lang="it">Serve la password per modificare la protezione del firewall</message>
+    <defaults>
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
+      <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+  </action>
+
+  <action id="org.k1m1k.varco.helper">
+    <description>Turn the Varco service on or off, install or remove its packages</description>
+    <description xml:lang="it">Attivare o disattivare Varco, installare o rimuovere i suoi pacchetti</description>
+    <message>Authentication is required to change the Varco service</message>
+    <message xml:lang="it">Serve la password per modificare il servizio Varco</message>
+    <defaults>
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
+      <allow_active>auth_admin</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/libexec/varco/varco-helper</annotate>
+  </action>
+</policyconfig>
