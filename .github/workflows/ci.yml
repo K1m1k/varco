@@ -20,7 +20,7 @@ jobs:
             git ca-certificates build-essential debhelper devscripts gettext lintian \
             python3 python3-gi gir1.2-glib-2.0 shellcheck pipx
           pipx install ruff
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Unit tests
         run: make check
       - name: Static checks

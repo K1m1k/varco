@@ -7,6 +7,8 @@
 #
 # Every check prints PASS or FAIL; the test fails at the first FAIL.
 set -u
+# 'check && pass || fail' is used on purpose: pass only prints, so it never falls through to fail
+# shellcheck disable=SC2015
 
 WORK=/var/tmp/varco-systemtest
 mkdir -p "$WORK"
